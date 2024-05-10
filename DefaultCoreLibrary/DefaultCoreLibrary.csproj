@@ -4,10 +4,31 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Package that contains default C# needed data types Like "Result"</Description>
+    <Title>DefaultCoreLibrary</Title>
+    <PackageProjectUrl>https://github.com/Lorefist5/DefaultCoreLibrary</PackageProjectUrl>
+    <PackageIcon>csharpIcon.jpg</PackageIcon>
+    <RepositoryUrl>https://github.com/Lorefist5/DefaultCoreLibrary</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="csharpIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="csharpIcon.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="csharpIcon.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
