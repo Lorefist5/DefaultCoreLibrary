@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 
 namespace DefaultCoreLibrary.Infrastructure.Abstraction;
 
-public abstract class GenericRepository<T> : IGenericRepository<T> where T : Entity
+public abstract class GenericEfCoreRepository<T> : IGenericRepository<T> where T : Entity
 {
     protected readonly DbContext _context;
     protected readonly DbSet<T> _entities;
-    public GenericRepository(DbContext context)
+    public GenericEfCoreRepository(DbContext context)
     {
         _context = context;
         _entities = context.Set<T>();
