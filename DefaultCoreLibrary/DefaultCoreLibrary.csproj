@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/Lorefist5/DefaultCoreLibrary</PackageProjectUrl>
     <PackageIcon>csharpIcon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/Lorefist5/DefaultCoreLibrary</RepositoryUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
