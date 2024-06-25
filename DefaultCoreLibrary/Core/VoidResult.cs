@@ -4,6 +4,7 @@ public class VoidResult
 {
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
+    public Error Error { get; }
 
     private VoidResult(bool isSuccess, Error error)
     {
@@ -15,15 +16,21 @@ public class VoidResult
         {
             throw new ArgumentException("Failure result must have an error.", nameof(error));
         }
+
+        IsSuccess = isSuccess;
+        Error = error;
     }
+
     public static VoidResult Success()
     {
         return new VoidResult(true, Error.None);
     }
+
     public static VoidResult Failure(Error error)
     {
         return new VoidResult(false, error);
     }
-    public static implicit operator VoidResult(Error error) => VoidResult.Failure(error);
-    public static implicit operator VoidResult(bool result) => VoidResult.Success();
+
+    public static implicit operator VoidResult(Error error) => Failure(error);
+    public static implicit operator VoidResult(bool result) => result ? Success() : Failure(Error.None);
 }
