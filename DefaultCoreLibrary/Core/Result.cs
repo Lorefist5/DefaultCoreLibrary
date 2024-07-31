@@ -1,5 +1,4 @@
 ﻿namespace DefaultCoreLibrary.Core;
-
 public class Result<T>
 {
     private readonly T _value;
@@ -16,26 +15,28 @@ public class Result<T>
     }
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
-    public Error Error { get; }
+    public IReadOnlyList<Error> Errors { get; }
+
+    public Error Error => Errors.FirstOrDefault() ?? Error.None;
 
     // Private constructor ensures instances can only be created through Success or Failure methods.
-    private Result(bool isSuccess, Error error, T? value = default)
+    private Result(bool isSuccess, IEnumerable<Error> errors, T? value = default)
     {
-        if (isSuccess && error != Error.None)
+        if (isSuccess && errors.Any(e => e != Error.None))
         {
-            throw new ArgumentException("Success result must not have an error.", nameof(error));
+            throw new ArgumentException("Success result must not have any errors.", nameof(errors));
         }
         if (isSuccess && value == null)
         {
-            throw new ArgumentException("Success result must have a value.", nameof(error));
+            throw new ArgumentException("Success result must have a value.", nameof(errors));
         }
-        if (!isSuccess && error == Error.None)
+        if (!isSuccess && !errors.Any())
         {
-            throw new ArgumentException("Failure result must have an error.", nameof(error));
+            throw new ArgumentException("Failure result must have at least one error.", nameof(errors));
         }
 
         IsSuccess = isSuccess;
-        Error = error;
+        Errors = errors.ToList();
         _value = value;
     }
 
@@ -45,14 +46,20 @@ public class Result<T>
         {
             throw new ArgumentNullException(nameof(value), "Success result must have a value.");
         }
-        return new Result<T>(true, Error.None, value);
+        return new Result<T>(true, Enumerable.Empty<Error>(), value);
     }
 
-    public static Result<T> Failure(Error error)
+    public static Result<T> Failure(params Error[] errors)
     {
-        return new Result<T>(false, error);
+        return new Result<T>(false, errors);
     }
 
-    public static implicit operator Result<T>(Error error) => Result<T>.Failure(error);
-    public static implicit operator Result<T>(T result) => Result<T>.Success(result);
+    public static Result<T> Failure(IEnumerable<Error> errors)
+    {
+        return new Result<T>(false, errors);
+    }
+
+    public static implicit operator Result<T>(Error error) => Failure(error);
+    public static implicit operator Result<T>(T result) => Success(result);
+    public static implicit operator Result<T>(List<Error> errors) => Failure(errors);
 }
