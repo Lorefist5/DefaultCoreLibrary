@@ -73,11 +73,12 @@ public class HttpResult<T>
     private static HttpResultError ExceptionToError(Exception ex) => new HttpResultError(ex.GetType().Name, ex.Message);
 
     // Method to handle different status codes
-    public HttpResult<T> When(HttpStatusCode statusCode, Action action)
+    public HttpResult<T> When(HttpStatusCode statusCode, Action<HttpResultError> action)
     {
-        if (StatusCode == statusCode)
+        var error = Errors.FirstOrDefault(e => e.StatusCode == statusCode);
+        if (error != null)
         {
-            action();
+            action(error);
         }
         return this;
     }
