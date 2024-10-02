@@ -1,6 +1,9 @@
-﻿namespace DefaultCoreLibrary.Core;
+﻿using System.Net;
 
-public sealed record class Error(string Code, string? Description = null)
+namespace DefaultCoreLibrary.Core;
+
+public record class Error(string Code, string? Description = null)
 {
     public static readonly Error None = new(string.Empty);
+    
 }
