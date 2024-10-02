@@ -68,6 +68,8 @@ public class HttpResult<T>
     public static implicit operator HttpResult<T>(HttpResultError error) => Failure(HttpStatusCode.InternalServerError, error);
     public static implicit operator HttpResult<T>(T result) => Success(result);
     public static implicit operator HttpResult<T>(Exception ex) => Failure(HttpStatusCode.InternalServerError, new HttpResultError(ex.GetType().Name, ex.Message));
+    public static implicit operator HttpResult<T>(List<HttpResultError> errors) => Failure(HttpStatusCode.InternalServerError, errors);
+
 
     // Helper method to convert Exception to HttpResultError
     private static HttpResultError ExceptionToError(Exception ex) => new HttpResultError(ex.GetType().Name, ex.Message);
