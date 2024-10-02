@@ -33,4 +33,8 @@ public class VoidResult
 
     public static implicit operator VoidResult(Error error) => Failure(error);
     public static implicit operator VoidResult(bool result) => result ? Success() : Failure(Error.None);
+    public static implicit operator VoidResult(Exception ex) => Failure(new Error(ex.GetType().Name, ex.Message));
+
+    // Helper method to convert Exception to Error
+    private static Error ExceptionToError(Exception ex) => new Error(ex.GetType().Name, ex.Message);
 }

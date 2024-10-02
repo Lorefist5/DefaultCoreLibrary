@@ -62,4 +62,10 @@ public class Result<T>
     public static implicit operator Result<T>(Error error) => Failure(error);
     public static implicit operator Result<T>(T result) => Success(result);
     public static implicit operator Result<T>(List<Error> errors) => Failure(errors);
+
+    // New implicit operator to convert Exception to Result<T>
+    public static implicit operator Result<T>(Exception ex) => Failure(new Error(ex.GetType().Name, ex.Message));
+
+    // Helper method to convert Exception to Error
+    private static Error ExceptionToError(Exception ex) => new Error(ex.GetType().Name, ex.Message);
 }
