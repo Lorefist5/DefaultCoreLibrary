@@ -4,31 +4,38 @@ public class VoidResult
 {
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
-    public Error Error { get; }
+    public IReadOnlyList<Error> Errors { get; }
 
-    private VoidResult(bool isSuccess, Error error)
+    public Error Error => Errors.FirstOrDefault() ?? Error.None;
+
+    private VoidResult(bool isSuccess, IEnumerable<Error> errors)
     {
-        if (isSuccess && error != Error.None)
+        if (isSuccess && errors.Any(e => e != Error.None))
         {
-            throw new ArgumentException("Success result must not have an error.", nameof(error));
+            throw new ArgumentException("Success result must not have any errors.", nameof(errors));
         }
-        if (!isSuccess && error == Error.None)
+        if (!isSuccess && !errors.Any())
         {
-            throw new ArgumentException("Failure result must have an error.", nameof(error));
+            throw new ArgumentException("Failure result must have at least one error.", nameof(errors));
         }
 
         IsSuccess = isSuccess;
-        Error = error;
+        Errors = errors.ToList();
     }
 
     public static VoidResult Success()
     {
-        return new VoidResult(true, Error.None);
+        return new VoidResult(true, Enumerable.Empty<Error>());
     }
 
-    public static VoidResult Failure(Error error)
+    public static VoidResult Failure(params Error[] errors)
     {
-        return new VoidResult(false, error);
+        return new VoidResult(false, errors);
+    }
+
+    public static VoidResult Failure(IEnumerable<Error> errors)
+    {
+        return new VoidResult(false, errors);
     }
 
     public static implicit operator VoidResult(Error error) => Failure(error);
