@@ -10,18 +10,7 @@
     <PackageProjectUrl>https://github.com/Lorefist5/DefaultCoreLibrary</PackageProjectUrl>
     <PackageIcon>csharpIcon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/Lorefist5/DefaultCoreLibrary</RepositoryUrl>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="csharpIcon.jpg">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
 
 </Project>
